@@ -16,7 +16,11 @@ if not os.path.exists(file_path):
 
 user_id_get = "user1"
 pass_w = "password"
-get_values = 0
+get_values = [0,0,0,0]   # 4 chanel values of ADC
+encrypted_value=[0,0,0,0]
+decrypted_value=[0,0,0,0]
+# Encryption key
+# The encryption key should be kept secret and not hardcoded in the code.
 encryption_key = 42
 
 # Firebase initialization
@@ -62,10 +66,10 @@ def is_i2c_module_loaded():
         return False
 
 # Read ADC value
-def getvalue_adc(i2c_address):
+def getvalue_adc(i2c_address,channel):
     bus = smbus.SMBus(1)
     try:
-        bus.write_byte(i2c_address, 0x40)
+        bus.write_byte(i2c_address, channel)
         value = bus.read_byte(i2c_address)
         return value
     except Exception as e:
@@ -93,17 +97,40 @@ def updating_db_values_thread():
                 error_var.set("Invalid I2C address format.")
                 continue
 
-            adc_value = getvalue_adc(i2c_address)
-            if adc_value is None:
+            adc_value1 = getvalue_adc(i2c_address,0x40)
+            adc_value2 = getvalue_adc(i2c_address,0x41)
+            adc_value3 = getvalue_adc(i2c_address,0x42)
+            adc_value4 = getvalue_adc(i2c_address,0x43)
+
+            get_values[0] = adc_value1
+            get_values[1]= adc_value2
+            get_values[2]= adc_value3
+            get_values[3]= adc_value4
+            if None in get_values:
+                error_var.set("ADC read failed.")
                 continue
+            error_var.set("")
+            encrypted_value[0] = xor_encrypt(get_values[0], encryption_key)
+            user_node_ref.child('values1').set(encrypted_value[0])
+            encrypted_value[1] = xor_encrypt(get_values[1], encryption_key)
+            user_node_ref.child('values2').set(encrypted_value[1])
+            encrypted_value[2] = xor_encrypt(get_values[2], encryption_key)
+            user_node_ref.child('values3').set(encrypted_value[2])
+            encrypted_value[3] = xor_encrypt(get_values[3], encryption_key)
+            user_node_ref.child('values4').set(encrypted_value[3])
 
-            get_values = adc_value
-            encrypted_value = xor_encrypt(get_values, encryption_key)
-            user_node_ref.child('values').set(encrypted_value)
-
-            decrypted_value = xor_decrypt(encrypted_value, encryption_key)
-            decrypted_var.set(f"ADC: {decrypted_value}")
-            encrypted_var.set(f"Encrypted: {encrypted_value}")
+            decrypted_value[0] = xor_decrypt(encrypted_value[0], encryption_key)
+            decrypted_var1.set(f"Channel 0  --  ADC: {decrypted_value[0]}")
+            encrypted_var1.set(f"Channel 0  --  Encrypted: {encrypted_value[0]}")
+            decrypted_value[1] = xor_decrypt(encrypted_value[1], encryption_key)
+            decrypted_var2.set(f"Channel 1  --  ADC: {decrypted_value[1]}")
+            encrypted_var2.set(f"Channel 1  --  Encrypted: {encrypted_value[1]}")
+            decrypted_value[2] = xor_decrypt(encrypted_value[2], encryption_key)
+            decrypted_var3.set(f"Channel 2  --  ADC: {decrypted_value[2]}")
+            encrypted_var3.set(f"Channel 2  --  Encrypted: {encrypted_value[2]}")
+            decrypted_value[3] = xor_decrypt(encrypted_value[3], encryption_key)
+            decrypted_var4.set(f"Channel 3  --  ADC: {decrypted_value[3]}")
+            encrypted_var4.set(f"Channel 3  --  Encrypted: {encrypted_value[3]}")
         except Exception as e:
             error_var.set(f"Unexpected error: {e}")
         time.sleep(2)
@@ -175,7 +202,7 @@ password_entry.pack(pady=5)
 
 ttk.Label(root, text="I2C Address (Hex):").pack(pady=5)
 i2c_entry = ttk.Entry(root, width=10)
-i2c_entry.insert(0, "0x4F")
+i2c_entry.insert(0, "0x48")
 i2c_entry.pack(pady=5)
 
 error_var = tk.StringVar()
@@ -184,10 +211,23 @@ ttk.Label(root, textvariable=error_var, foreground='red').pack()
 start_button = ttk.Button(root, text="Start Uploading", command=start_uploading)
 start_button.pack(pady=15)
 
-decrypted_var = tk.StringVar()
-encrypted_var = tk.StringVar()
-ttk.Label(root, textvariable=decrypted_var).pack(pady=5)
-ttk.Label(root, textvariable=encrypted_var).pack(pady=5)
+decrypted_var1 = tk.StringVar()
+encrypted_var1 = tk.StringVar()
+ttk.Label(root, textvariable=decrypted_var1).pack(pady=5)
+ttk.Label(root, textvariable=encrypted_var1).pack(pady=5)
+decrypted_var2 = tk.StringVar()
+encrypted_var2 = tk.StringVar()
+ttk.Label(root, textvariable=decrypted_var2).pack(pady=5)
+ttk.Label(root, textvariable=encrypted_var2).pack(pady=5)
+decrypted_var3 = tk.StringVar()
+encrypted_var3 = tk.StringVar()
+ttk.Label(root, textvariable=decrypted_var3).pack(pady=5)
+ttk.Label(root, textvariable=encrypted_var3).pack(pady=5)
+decrypted_var4 = tk.StringVar()
+encrypted_var4 = tk.StringVar()
+ttk.Label(root, textvariable=decrypted_var4).pack(pady=5)
+ttk.Label(root, textvariable=encrypted_var4).pack(pady=5)
 
 root.protocol("WM_DELETE_WINDOW", on_close)
 root.mainloop()
+
