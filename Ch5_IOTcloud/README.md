@@ -1,4 +1,5 @@
-## potentiometer ---> ADC Analog input
-## ADC Digital output ---> RPI GPIO 2 & 3
-## Digital data ---> Firebase Cloud
-## Firebase Cloud ---> Website
+**SDK**
+
+- It requires `services.json` generated from firebase
+
+- auto-py-to-exe can be used but above steps recommended & before start to build add file services.json in build.
