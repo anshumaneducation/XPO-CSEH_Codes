@@ -68,22 +68,41 @@ export function authenticate() {
 // Fetch and display data from Firebase
 function fetchAndDisplayData(userId) {
 
-    let html = document.getElementById("value-cseh").innerHTML;
-    const value_from_db_ref = ref(database, `/${userId}/values`);
-    console.log(value_from_db_ref)
+    const value_from_db_ref = ref(database, `/${userId}/values1`);
+    const value_from_db_ref1 = ref(database, `/${userId}/values2`);
+    const value_from_db_ref2 = ref(database, `/${userId}/values3`);
+    const value_from_db_ref3 = ref(database, `/${userId}/values4`);
 
     onValue(value_from_db_ref, (snapshot) => {
         const value_from_db = snapshot.val();
         console.log(value_from_db)
         document.getElementById("value-cseh").innerHTML = value_from_db;
     });
+    onValue(value_from_db_ref1, (snapshot) => {
+        const value_from_db = snapshot.val();
+        console.log(value_from_db)
+        document.getElementById("value-cseh1").innerHTML = value_from_db;
+    });
+    onValue(value_from_db_ref2, (snapshot) => {
+        const value_from_db = snapshot.val();
+        console.log(value_from_db)
+        document.getElementById("value-cseh2").innerHTML = value_from_db;
+    });
+    onValue(value_from_db_ref3, (snapshot) => {
+        const value_from_db = snapshot.val();
+        console.log(value_from_db)
+        document.getElementById("value-cseh3").innerHTML = value_from_db;
+    });
     
 }
 
 // Fetch and display data from Firebase
 function fetchAndDisplayData_decrypted(userId) {
-    let html = document.getElementById("value-cseh").innerHTML;
-    const value_from_db_ref = ref(database, `/${userId}/values`);
+
+    const value_from_db_ref = ref(database, `/${userId}/values1`);
+    const value_from_db_ref1 = ref(database, `/${userId}/values2`);
+    const value_from_db_ref2 = ref(database, `/${userId}/values3`);
+    const value_from_db_ref3 = ref(database, `/${userId}/values4`);
     
     onValue(value_from_db_ref, (snapshot) => {
         const encryptedValue = snapshot.val();
@@ -96,6 +115,42 @@ function fetchAndDisplayData_decrypted(userId) {
         console.log("Decrypted Value:", decryptedValue);
 
         document.getElementById("value-cseh").innerHTML = decryptedValue;
+    });
+    onValue(value_from_db_ref1, (snapshot) => {
+        const encryptedValue = snapshot.val();
+
+        // Decrypt the received value
+        const encryptionKey = 42;  // Must be the same key as used for encryption
+        const decryptedValue = xorDecrypt(encryptedValue, encryptionKey);
+
+        console.log("Encrypted Value:", encryptedValue);
+        console.log("Decrypted Value:", decryptedValue);
+
+        document.getElementById("value-cseh1").innerHTML = decryptedValue;
+    });
+    onValue(value_from_db_ref2, (snapshot) => {
+        const encryptedValue = snapshot.val();
+
+        // Decrypt the received value
+        const encryptionKey = 42;  // Must be the same key as used for encryption
+        const decryptedValue = xorDecrypt(encryptedValue, encryptionKey);
+
+        console.log("Encrypted Value:", encryptedValue);
+        console.log("Decrypted Value:", decryptedValue);
+
+        document.getElementById("value-cseh2").innerHTML = decryptedValue;
+    });
+    onValue(value_from_db_ref3, (snapshot) => {
+        const encryptedValue = snapshot.val();
+
+        // Decrypt the received value
+        const encryptionKey = 42;  // Must be the same key as used for encryption
+        const decryptedValue = xorDecrypt(encryptedValue, encryptionKey);
+
+        console.log("Encrypted Value:", encryptedValue);
+        console.log("Decrypted Value:", decryptedValue);
+
+        document.getElementById("value-cseh3").innerHTML = decryptedValue;
     });
 }
 
