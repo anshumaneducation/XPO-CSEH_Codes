@@ -6,7 +6,6 @@
 3. N/W threats and Hacking Simulation             -  CH3 total EXPS= 7
 4. Cryptography                                   -  CH4 total EXPS= 5
 5. IOT Cloud Security                             -  CH5 total EXPS= 1
-                                                         Total EXPS= 22
 
 ## How to build executable from python script
 
