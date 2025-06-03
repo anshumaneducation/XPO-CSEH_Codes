@@ -17,7 +17,9 @@
 
 - Use commands `python3 <file_name.py>` or `bash <file_name.sh>
 
-## README ADDED FOR PRODUCTION DVD ---xxxx---
+## Directory listing FOR PRODUCTION DVD ---
+- Note:- 1. Production DVD Consists of Executables folder, Scripts folder , config.txt, lib folder, Admin app(only EXE)
+- 2. Executables folder contains apps(.exe) whose actual python codes are saved in CSEH_Code folder. 
 ```
 F:\>dir
  Volume in drive F is XPO-CSEH PROD CD
