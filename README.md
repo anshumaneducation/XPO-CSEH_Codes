@@ -17,9 +17,8 @@
 
 - Use commands `python3 <file_name.py>` or `bash <file_name.sh>
 
-## Distribution of all for project CSEH:-
+## Distribution format for linux PC based application:-
 
-## Distribution of all for project CSEH:-
 
 | Sr No. | Parameter     | Github Repository | Production CD | Accompanying CD | Project CD |
 |--------|---------------|-------------------|---------------|-----------------|------------|
