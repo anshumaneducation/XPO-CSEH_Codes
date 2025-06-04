@@ -33,7 +33,8 @@
 
 
 ## Directory listing FOR PRODUCTION DVD ---
-- Note:- 1. Production DVD Consists of Executables folder, Scripts folder , config.txt, lib folder, Admin app(only EXE)
+Note:-
+- 1. Production DVD Consists of Executables folder, Scripts folder , config.txt, lib folder, Admin app(only EXE)
 - 2. Executables folder contains apps(.exe) whose actual python codes are saved in CSEH_Code folder. 
 ```
 F:\>dir
@@ -85,4 +86,4 @@ F:\>dir
               13 Dir(s)               0 bytes free
 
 ```
-  ------ xxxxxxxxx-------   END DVD            
+  -------------   END DVD            
