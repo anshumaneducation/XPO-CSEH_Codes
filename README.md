@@ -17,20 +17,21 @@
 
 - Use commands `python3 <file_name.py>` or `bash <file_name.sh>
 
-## Distribution format for linux PC based application:-
+## Distribution format for linux PC based application use PD 16/32 GB PD to transfer files from DVD to Linux PC:-
 
 
-| Sr No. | Parameter     | Github Repository | Production CD | Accompanying CD | Project CD |
-|--------|---------------|-------------------|---------------|-----------------|------------|
-|   1    | Executables   |      ✅           |      ✅       |       ❌        |     ✅     |
-|   2    | Scripts       |      ✅           |      ✅       |       ❌        |     ✅     |
-|   3    | Codes of Exe  |      ✅           |      ❌       |       ❌        |     ✅     |
-|   4    | Admin App Exe |      ✅           |      ✅       |       ❌        |     ✅     |
-|   5    | Admin App Code|      ✅           |      ❌       |       ❌        |     ✅     |
-|   6    | Config txt    |      ✅           |      ✅       |       ❌        |     ✅     |
-|   7    | lib folder    |      ❌           |      ✅       |       ❌        |     ✅     |
-|   8    | requirements  |      ✅           |      ❌       |       ❌        |     ✅     |
-|   9    | Wireshark     |      ❌           |      ❌       |       ✅        |     ✅     |
+| Sr No. | Parameter     | Github Repository | Production CD    | Accompanying CD | Project CD |
+|--------|---------------|-------------------|------------------|-----------------|------------|
+|   1    | Executables   |     .py code      |      App/.exe    |       -         |     Backup     |
+|   2    | Scripts       |      Codes        |      Codes       |       -         |     Backup     |
+|   4    | Admin App     |   .py Code + App  |     App/exe      |       -         |     Backup     |
+|   6    | Config txt    |  H/W Config list  |H/W Config list   |       -         |     Backup     |
+|   7    | lib folder    |   NA - Too Big    |Dnloaded lib Codes|       -         |     Backup     |
+|   8    | requirements  | List of libraries |      -           |       -         |     Backup     |
+|   9    | Wireshark     |      -            |      -           |  Installer      |     Backup     |
+| 10     |Linux ISO      |      NA           | Linux ISO DVD    |       -         |     Backup     | 
+                                             | containing Imager| 
+                                             |& 2 ISOs          |
 
 
 ## Directory listing FOR PRODUCTION DVD ---
