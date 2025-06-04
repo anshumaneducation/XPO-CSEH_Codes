@@ -1,7 +1,10 @@
-## potentiometer ---> ADC Analog input
-## ADC Digital output ---> RPI GPIO 2 & 3
-## Digital data ---> Firebase Cloud
-## Firebase Cloud ---> Website
+```
+potentiometer ---> ADC Analog input
+ADC Digital output ---> RPI GPIO 2(SDA) & 3(SCL)
+RPI Through Internet ---> Firebase Cloud
+Firebase Cloud ---> Website
+```
+
 ### SDK Overview
 
 To facilitate the integration and functionality of the system, the following SDKs are utilized:

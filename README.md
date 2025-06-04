@@ -13,7 +13,7 @@
 
 - It requires pyinstaller library so install it using command `pip3 install pyinstaller`
 - Use this command for building executable `pyinstaller --noconfirm --onefile --windowed  "<path-to-scrpt.py>"`
-- Alternatively auto-py-to-exe can be used but above steps recommended.
+- Alternatively auto-py-to-exe app can be used but above steps recommended, to install this app use command `pip3 install auto_py_to_exe`
 
 ## How to Run python scripts and bash script
 
@@ -88,4 +88,4 @@ F:\>dir
               13 Dir(s)               0 bytes free
 
 ```
-  -------------   END DVD            
+-------------   END DVD            
