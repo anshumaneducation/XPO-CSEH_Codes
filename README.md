@@ -22,11 +22,11 @@
 ## Distribution format for linux PC based application use PD 16/32 GB PD to transfer files from DVD to Linux PC:-
 
 
-| Sr No. | Parameter     | Github Repository | Production CD    | Accompanying CD | Project CD |
+| Sr No. | Parameter     | Github Repository | Production DVD    | Accompanying DVD | Project DVD |
 |--------|---------------|-------------------|------------------|-----------------|------------|
 |   1    | Executables   |     .py code      |      App/.exe    |       -         |     Backup     |
 |   2    | Scripts       |      Codes        |      Codes       |       -         |     Backup     |
-|   4    | Admin App     |   .py Code + App  |     App/exe      |       -         |     Backup     |
+|   4    | Admin App     |   .py Code + App  |     App/.exe      |       -         |     Backup     |
 |   6    | Config txt    |  H/W Config list  |H/W Config list   |       -         |     Backup     |
 |   7    | lib folder    |   NA - Too Big    |Dnloaded lib Codes|       -         |     Backup     |
 |   8    | requirements  | List of libraries |      -           |       -         |     Backup     |
