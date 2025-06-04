@@ -29,9 +29,8 @@
 |   7    | lib folder    |   NA - Too Big    |Dnloaded lib Codes|       -         |     Backup     |
 |   8    | requirements  | List of libraries |      -           |       -         |     Backup     |
 |   9    | Wireshark     |      -            |      -           |  Installer      |     Backup     |
-| 10     |Linux ISO      |      NA           | Linux ISO DVD    |       -         |     Backup     | 
-                                             | containing Imager| 
-                                             |& 2 ISOs          |
+| 10     |Linux ISO      |      NA           | Linux ISO DVD containing Imager & 2 ISOs     |       -         |     Backup     | 
+     |
 
 
 ## Directory listing FOR PRODUCTION DVD ---
