@@ -17,6 +17,23 @@
 
 - Use commands `python3 <file_name.py>` or `bash <file_name.sh>
 
+## Distribution of all for project CSEH:-
+
+## Distribution of all for project CSEH:-
+
+| Sr No. | Parameter     | Github Repository | Production CD | Accompanying CD | Project CD |
+|--------|---------------|-------------------|---------------|-----------------|------------|
+|   1    | Executables   |      ✅           |      ✅       |       ❌        |     ✅     |
+|   2    | Scripts       |      ✅           |      ✅       |       ❌        |     ✅     |
+|   3    | Codes of Exe  |      ✅           |      ❌       |       ❌        |     ✅     |
+|   4    | Admin App Exe |      ✅           |      ✅       |       ❌        |     ✅     |
+|   5    | Admin App Code|      ✅           |      ❌       |       ❌        |     ✅     |
+|   6    | Config txt    |      ✅           |      ✅       |       ❌        |     ✅     |
+|   7    | lib folder    |      ❌           |      ✅       |       ❌        |     ✅     |
+|   8    | requirements  |      ✅           |      ❌       |       ❌        |     ✅     |
+|   9    | Wireshark     |      ❌           |      ❌       |       ✅        |     ✅     |
+
+
 ## Directory listing FOR PRODUCTION DVD ---
 - Note:- 1. Production DVD Consists of Executables folder, Scripts folder , config.txt, lib folder, Admin app(only EXE)
 - 2. Executables folder contains apps(.exe) whose actual python codes are saved in CSEH_Code folder. 
