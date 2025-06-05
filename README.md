@@ -19,19 +19,21 @@
 
 - Use commands `python3 <file_name.py>` or `bash <file_name.sh>
 
-## Distribution format for linux PC based application use PD 16/32 GB PD to transfer files from DVD to Linux PC:-
+## Distribution format for linux PC based application 
+- Use PD (16/32 GB) to transfer files from DVD to Linux PC
+- Production DVD will have subfolder for CSEH Application e.g. CSEH applications which will contain many subfolder containing apps or code as stated
 
 
-| Sr No. | Parameter     | Github Repository | Production DVD    | Accompanying DVD | Project DVD |
+| Sr No. | Names of subfolder     | Github Repository | Production DVD (Saved Dir Listings)  | Accompanying CD | Project DVD |
 |--------|---------------|-------------------|------------------|-----------------|------------|
-|   1    | Executables   |     .py code      |      App/.exe    |       -         |     Backup     |
-|   2    | Scripts       |      Codes        |      Codes       |       -         |     Backup     |
-|   4    | Admin App     |   .py Code + App  |     App/.exe      |       -         |     Backup     |
-|   6    | Config txt    |  H/W Config list  |H/W Config list   |       -         |     Backup     |
-|   7    | lib folder    |   NA - Too Big    |Dnloaded lib Codes|       -         |     Backup     |
-|   8    | requirements  | List of libraries |      -           |       -         |     Backup     |
-|   9    | Wireshark     |      -            |      -           |  Installer      |     Backup     |
-| 10     |Linux ISO      |     NA | Linux ISO DVD containing Imager & 2 ISOs| -   |     Backup     | 
+|   1    | Executables   |   1 or more .py codes     |      1 or many App/.exe    |       -         |     Backup     |
+|   2    | Scripts       |    1 or many .py or .sh Codes        |      1 or many .py or .sh Codes         |       -         |     Backup     |
+|   4    | Admin App     |   .py Code + App/.exe  |     App/.exe only      |       -         |     Backup     |
+|   6    | Config.txt    |  H/W Config list  |H/W Config list   |       -         |     Backup     |
+|   7    | lib folder    |   NA - Too Big to save   |Dnloaded libraries|       -         |     Backup     |
+|   8    | requirements.txt  | List of libraries |      -           |       -         |     Backup     |
+|   9    | Misc S/w     |      -            |      -           |  WS Installer      |     Backup     |
+| 10     |Linux ISO      |     NA | 3 Folders- Imager & 2 ISOs(Raspbion/Kali)| -   |     Backup     | 
 
 
 ## Directory listing FOR PRODUCTION DVD ---
