@@ -1,6 +1,9 @@
 import binascii
-from tkinter import Tk, Label, Button, Text, filedialog, messagebox, Canvas, Scrollbar, Frame
-from PIL import Image, ImageTk
+from tkinter import Tk, Label, Button, Text, filedialog, messagebox, Canvas, Scrollbar, Frame, PhotoImage
+from PIL import Image
+import os
+import io
+import base64
 
 # File path
 file_path = "/etc/encrypted_file.enc"
@@ -8,6 +11,13 @@ file_path = "/etc/encrypted_file.enc"
 # Check if the encrypted file exists before opening the app
 if not os.path.exists(file_path):
     exit()
+
+# Convert PIL image to base64 PNG for use in Tkinter
+def pil_to_tk_image(pil_image):
+    with io.BytesIO() as output:
+        pil_image.save(output, format="PNG")
+        data = base64.b64encode(output.getvalue())
+        return PhotoImage(data=data)
 
 # Function to convert image to hex code
 def image_to_hex(image_path):
@@ -37,23 +47,21 @@ def load_image():
     original_image_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.jpg *.jpeg *.bmp")])
     if original_image_path:
         original_image_hex = image_to_hex(original_image_path).decode()
-         # Define the file name
         file_name = "original_image_hex.txt"
-
-        # Create and write the hex data to the file
         with open(file_name, "w") as file:
             file.write(original_image_hex)
 
         print(f"Hex data written to {file_name}")
-        
         original_length = len(original_image_hex)
-        
-        # Load and resize image for display
-        original_image = Image.open(original_image_path)
-        original_image = original_image.resize((200, 200), Image.ANTIALIAS)  # Resize for smaller displays
-        original_image_tk = ImageTk.PhotoImage(original_image)
 
-        # Display in the canvas
+        original_image = Image.open(original_image_path)
+        try:
+            original_image = original_image.resize((400, 400), Image.Resampling.LANCZOS)
+        except AttributeError:
+            original_image = original_image.resize((400, 400), Image.ANTIALIAS)
+
+        original_image_tk = pil_to_tk_image(original_image)
+
         original_canvas.create_image(0, 0, image=original_image_tk, anchor="nw")
         original_canvas.config(scrollregion=original_canvas.bbox("all"))
         messagebox.showinfo("Image Loaded", "Original image loaded successfully!")
@@ -68,23 +76,24 @@ def embed_message():
         return
 
     modified_image_hex = add_hidden_data(original_image_hex.encode(), hidden_message).decode()
-    # Convert modified_image_hex to a string if it is in bytes
+
     if isinstance(modified_image_hex, bytes):
-        modified_image_hex = modified_image_hex.decode()  # Converts bytes to a hex string
+        modified_image_hex = modified_image_hex.decode()
 
     file_name = "modified_image_hex.txt"
-
-    # Create and write the hex data to the file
     with open(file_name, "w") as file:
         file.write(modified_image_hex)
 
     hex_to_image(modified_image_hex.encode(), 'modified_image.png')
 
     modified_image = Image.open('modified_image.png')
-    modified_image = modified_image.resize((200, 200), Image.ANTIALIAS)
-    modified_image_tk = ImageTk.PhotoImage(modified_image)
+    try:
+        modified_image = modified_image.resize((400, 400), Image.Resampling.LANCZOS)
+    except AttributeError:
+        modified_image = modified_image.resize((400, 400), Image.ANTIALIAS)
 
-    # Display in the canvas
+    modified_image_tk = pil_to_tk_image(modified_image)
+
     modified_canvas.create_image(0, 0, image=modified_image_tk, anchor="nw")
     modified_canvas.config(scrollregion=modified_canvas.bbox("all"))
     messagebox.showinfo("Message Embedded", "Message embedded successfully!")
@@ -145,17 +154,10 @@ message_entry = Text(root, height=4, width=40)
 message_entry.pack(pady=10)
 
 # Buttons
-load_button = Button(root, text="Load Image", command=load_image)
-load_button.pack(pady=5)
-embed_button = Button(root, text="Embed Message", command=embed_message)
-embed_button.pack(pady=5)
-extract_button = Button(root, text="Extract Message", command=extract_message)
-extract_button.pack(pady=5)
-# Save original or modified image buttons
-save_original_button = Button(root, text="Save Original Image", command=lambda: save_image('original'))
-save_original_button.pack(pady=5)
-save_modified_button = Button(root, text="Save Modified Image", command=lambda: save_image('modified'))
-save_modified_button.pack(pady=5)
-
+Button(root, text="Load Image", command=load_image).pack(pady=5)
+Button(root, text="Embed Message", command=embed_message).pack(pady=5)
+Button(root, text="Extract Message", command=extract_message).pack(pady=5)
+Button(root, text="Save Original Image", command=lambda: save_image('original')).pack(pady=5)
+Button(root, text="Save Modified Image", command=lambda: save_image('modified')).pack(pady=5)
 
 root.mainloop()
