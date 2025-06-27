@@ -32,6 +32,15 @@ def hex_to_image(hex_data, output_path):
 
 # Function to add hidden data (append to the end)
 def add_hidden_data(hex_data, hidden_data):
+    # Convert hidden data to hex
+    file_name = "original_image_hex.txt"
+    with open(file_name, "w") as file:
+        file.write(hex_data.decode())  # Decode hex_data to string before writing
+
+    file_name = "modified_image_hex.txt"
+    with open(file_name, "w") as file:
+        file.write(hex_data.decode() + binascii.hexlify(hidden_data.encode()).decode())  # Decode combined hex data
+
     return hex_data + binascii.hexlify(hidden_data.encode())
 
 # Function to extract hidden data
@@ -47,11 +56,7 @@ def load_image():
     original_image_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.jpg *.jpeg *.bmp")])
     if original_image_path:
         original_image_hex = image_to_hex(original_image_path).decode()
-        file_name = "original_image_hex.txt"
-        with open(file_name, "w") as file:
-            file.write(original_image_hex)
-
-        print(f"Hex data written to {file_name}")
+    
         original_length = len(original_image_hex)
 
         original_image = Image.open(original_image_path)
@@ -80,9 +85,6 @@ def embed_message():
     if isinstance(modified_image_hex, bytes):
         modified_image_hex = modified_image_hex.decode()
 
-    file_name = "modified_image_hex.txt"
-    with open(file_name, "w") as file:
-        file.write(modified_image_hex)
 
     hex_to_image(modified_image_hex.encode(), 'modified_image.png')
 
