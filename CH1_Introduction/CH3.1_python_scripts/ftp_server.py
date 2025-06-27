@@ -1,4 +1,3 @@
-
 # ftp_server.py
 
 from pyftpdlib.authorizers import DummyAuthorizer
@@ -22,7 +21,7 @@ print("1. Connect to the server using an FTP client.")
 print("2. Use the username 'user' and password '12345'.")   
 print("ls - List files in the current directory.")
 print("get <filename> - Download a file.")
-print("put <filename> - Upload a file.")
+print("put <filename> - Upload a file.") 
 print("delete <filename> - Delete a file.")
 print("quit - Disconnect from the server.")
 print("bye - To stop the server.")
