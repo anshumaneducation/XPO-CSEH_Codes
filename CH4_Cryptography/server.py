@@ -9,6 +9,7 @@ import sDES
 import TDES
 import hashlib
 import threading
+import AES
 import subprocess
 import sign
 import random
@@ -86,7 +87,7 @@ accept_thread.start()
 def update_combo1(event):
     selected_method = combo1.get()
     if selected_method == "Symmetric Encryption":
-        combo2['values'] = ("sDES", "TDES", "RC4")
+        combo2['values'] = ("sDES", "TDES", "RC4","AES")
     elif selected_method == "Asymmetric Encryption":
         combo2['values'] = ("RSA")
     else:
@@ -130,14 +131,14 @@ def on_button_click():
         elif algorithm == 'TDES':
             result = hashlib.md5(b'TDES').hexdigest()
             ciphertext = result + "|" + md5_key_hash + "|" + TDES.tdes_encrypt(plaintext, public_key)
+        elif algorithm == 'AES':
+            result = hashlib.md5(b'AES').hexdigest()
+            ciphertext = result + "|" +  md5_key_hash + "|" +AES.aes_encrypt(plaintext, public_key)
     else:
         if algorithm == 'RSA':
             public_key1 = (8009, 14017)
             result = hashlib.md5(b'RSA').hexdigest()
             ciphertext = result + "|" + md5_key_hash + "|" + RSA.rsa_encrypt(plaintext, public_key1)
-        if algorithm == 'AES':
-            result = hashlib.md5(b'rc4').hexdigest()
-            ciphertext = result + "|" + DSA.RC4(plaintext, public_key1)
 
     send_to_client()
     

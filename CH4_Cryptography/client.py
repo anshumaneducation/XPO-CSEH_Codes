@@ -17,6 +17,42 @@ from Crypto.Util.Padding import pad, unpad
 import os
 import time
 
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
+import base64
+
+
+def aes_encrypt(plaintext: str, key ) -> str:
+    key=key.encode()
+    iv = get_random_bytes(16)  # AES block size is 16 bytes
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    padded_data = pad(plaintext.encode(), AES.block_size)
+    ciphertext = cipher.encrypt(padded_data)
+    return base64.b64encode(iv + ciphertext).decode()
+
+def aes_decrypt(encoded_ciphertext: str, key) -> str:
+    process_messages_write("Decrypting ciphertext: " + encoded_ciphertext)
+    # Convert key to bytes if it is a string
+
+    key=key.encode()
+    process_messages_write("Key is a string, converting to bytes.")
+    ciphertext = base64.b64decode(encoded_ciphertext)
+    process_messages_write("Decoded ciphertext: " + str(ciphertext))
+    iv = ciphertext[:16]
+    process_messages_write("IV extracted: " + str(iv))
+    actual_ciphertext = ciphertext[16:]
+    process_messages_write("Actual ciphertext: " + str(actual_ciphertext))
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    process_messages_write("Cipher object created with key: " + str(key))
+    padded_plaintext = cipher.decrypt(actual_ciphertext)
+    process_messages_write("Padded text after decryption: " + str(padded_plaintext))
+    plaintext = unpad(padded_plaintext, AES.block_size)
+    process_messages_write("Unpadded plaintext: " + str(plaintext))
+    # Return the plaintext as a string
+    process_messages_write("Decrypted plaintext: " + plaintext.decode())
+    return plaintext.decode()
+
 def tdes_encrypt(plaintext, key):
     # Convert key to bytes if it is a string
     if isinstance(key, str):
@@ -363,7 +399,7 @@ def received_Messages(ciphertext):
     else:
         identified_algorithm = 'Unknown'
 
-    process_messages_write("Identified Algorithm: " + hash_and_message[1])
+    process_messages_write("Identified Algorithm: " + identified_algorithm)
 
     key = "123456789012345678901234"
     md5_key_hash = hashlib.md5(key.encode()).hexdigest()
@@ -377,7 +413,7 @@ def received_Messages(ciphertext):
 
     if identified_algorithm == "RC4":
         process_messages_algorithm("Steps for RC4: ")
-        process_messages_algorithm("1. Key Scheduling Algorithm (KSA)")
+        process_messages_algorithm("1. Key Scheduling Algorithm (KSA)  : Key=  123456789012345678901234")
         process_messages_algorithm("Initializes the permutation in array S based on the key.")
         process_messages_algorithm("Fills S with values 0–255, then shuffles using the key.")
         process_messages_algorithm("2. Pseudorandom Generation Algorithm (PRGA)")
@@ -391,6 +427,7 @@ def received_Messages(ciphertext):
     if identified_algorithm == "sDES":
         process_messages_algorithm("Steps for SDES: ")
         process_messages_algorithm("Initial Permutation (IP)")
+        process_messages_algorithm("Public 24 bit Key use: 123456789012345678901234")
         process_messages_algorithm("fk using k2")
         process_messages_algorithm("Swap (Switch halves)")
         process_messages_algorithm("fk using k1")
@@ -404,7 +441,7 @@ def received_Messages(ciphertext):
         process_messages_algorithm("Steps for TDES: ")
         process_messages_algorithm("1. Base64 Input")
         process_messages_algorithm("This is typical for encrypted data that's been Base64-encoded.")
-        process_messages_algorithm("2. Key Handling")
+        process_messages_algorithm("2. Key Handling : 123456789012345678901234")
         process_messages_algorithm("Triple DES expects a 24-byte key (3 DES keys of 8 bytes each")
         process_messages_algorithm("3. Base64 Decode")
         process_messages_algorithm("TDES commonly uses CBC mode, which requires:First 8 bytes → IV:Remaining 8 bytes → Actual ciphertext")
@@ -417,14 +454,37 @@ def received_Messages(ciphertext):
 
     if identified_algorithm == "RSA":
         process_messages_algorithm("Steps for RSA: ")
+        process_messages_algorithm("1. Input: Ciphertext")
+        process_messages_algorithm("2. Use private key: d = 10609, n = 14017")
+        process_messages_algorithm("3. Decrypt each integer:	m = (c^d) mod n")
+        process_messages_algorithm("4. Convert each decrypted integer to ASCII character")
+        process_messages_algorithm("5. Result")
+
         process_messages_write("Performing RSA: ")
         plaintext = rsa_decrypt(encrypted_message, private_key)
 
 
     if identified_algorithm == "AES":
         process_messages_algorithm("Steps for AES: ")
+        process_messages_algorithm("1. Base64 Decode")
+        process_messages_algorithm("Operation: Decode it from Base64 to get raw bytes")
+        process_messages_algorithm("2. Extract Initialization Vector (IV)")
+        process_messages_algorithm("AES block size = 16 bytes, so first 16 bytes are the IV")
+        process_messages_algorithm("3. Extract Ciphertext")
+        process_messages_algorithm("The remaining bytes after the IV are the actual ciphertext")
+        process_messages_algorithm("4. Prepare AES-192 key  : 123456789012345678901234")
+        process_messages_algorithm("24-byte key (from string)")
+        process_messages_algorithm("5. Create cipher")
+        process_messages_algorithm("AES-192 in CBC mode with key + IV")
+        process_messages_algorithm("6. Decrypt ciphertext")
+        process_messages_algorithm("Produces padded plaintext")
+        process_messages_algorithm("7. Remove PKCS#7 padding")
+        process_messages_algorithm("Get the original plaintext")
+        process_messages_algorithm("8. Convert to string")
+        process_messages_algorithm("Final output")
+
         process_messages_write("Performing AES: ")
-        plaintext = tdes_decrypt(encrypted_message, key)
+        plaintext = aes_decrypt(encrypted_message, key)
 
 
     process_messages_write("Decrypted Message: " + plaintext)
