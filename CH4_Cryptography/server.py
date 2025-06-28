@@ -1,7 +1,7 @@
 ## Sender Node for Cyber Security Trainer
 
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog,messagebox
 import socket
 import RC4
 import RSA
@@ -14,6 +14,8 @@ import sign
 import random
 import string
 import psutil
+
+wait= False
 
 ciphertext = ""
 p = 467
@@ -32,17 +34,47 @@ server_socket.listen(5)
 clients = []
 
 
+
 def accept_clients():
     while True:
         client_socket, addr = server_socket.accept()
         clients.append(client_socket)
+        print(f"Client connected from {addr}")
+        
+        # Start a thread to handle communication with the client
+        client_thread = threading.Thread(target=handle_client, args=(client_socket,))
+        client_thread.daemon = True
+        client_thread.start()
+
+
+def handle_client(client_socket):
+    global wait
+    while True:
+        try:
+            # Receive data from the client
+            message = client_socket.recv(1024).decode('utf-8')
+            if message.lower() == "recv":
+                print("Received 'RECV' from client")
+                wait = True
+            if message.lower() == "ok":
+                print("Received 'ok' from client")
+                wait = False
+            else:
+                print(f"Received message: {message}")
+        except:
+            # Remove the client if an error occurs
+            clients.remove(client_socket)
+            client_socket.close()
+            break
 
 def send_to_client(event=None):
     for client in clients:
         try:
             client.sendall(ciphertext.encode('utf-8'))
+            
         except:
             clients.remove(client)
+           
 
 # Start accepting clients in a separate thread
 accept_thread = threading.Thread(target=accept_clients)
@@ -70,7 +102,10 @@ def update_combo2(event):
 
 # Function to handle button clicks
 def on_button_click():
-    global ciphertext
+    global ciphertext, wait
+    if (wait == True):
+        messagebox.showwarning("Processing Message", "Wait some time for Receiver")
+        return
 
     algorithm = combo2.get()
     cryptoType = combo1.get()
@@ -105,6 +140,7 @@ def on_button_click():
             ciphertext = result + "|" + DSA.RC4(plaintext, public_key1)
 
     send_to_client()
+    
 
 def on_closing():
     # Close all client sockets
