@@ -3,6 +3,7 @@ from tkinter import ttk
 import socket
 import threading
 import time
+import os
 
 # File path
 file_path = "/etc/encrypted_file.enc"

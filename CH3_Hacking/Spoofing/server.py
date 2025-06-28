@@ -2,6 +2,14 @@ import socket
 import threading
 import tkinter as tk
 from tkinter import scrolledtext
+import os
+
+# File path
+file_path = "/etc/encrypted_file.enc"
+
+# Check if the encrypted file exists before opening the app
+if not os.path.exists(file_path):
+    exit()
 
 server_ip = "0.0.0.0"  # Listen on all interfaces
 server_port = 9999

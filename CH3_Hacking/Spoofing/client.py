@@ -1,5 +1,13 @@
 import socket
 import tkinter as tk
+import os
+
+# File path
+file_path = "/etc/encrypted_file.enc"
+
+# Check if the encrypted file exists before opening the app
+if not os.path.exists(file_path):
+    exit()
 
 server_port = 9999
 

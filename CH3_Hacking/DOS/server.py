@@ -2,6 +2,7 @@ import tkinter as tk
 import socket
 import threading
 import time
+import os
 
 # Global variables
 server_thread = None
