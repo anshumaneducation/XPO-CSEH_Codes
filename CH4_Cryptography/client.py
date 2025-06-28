@@ -376,24 +376,56 @@ def received_Messages(ciphertext):
     process_messages_write("Identified Key Value: " + received_key_hash)
 
     if identified_algorithm == "RC4":
-        plaintext = RC4(encrypted_message, key)
+        process_messages_algorithm("Steps for RC4: ")
+        process_messages_algorithm("1. Key Scheduling Algorithm (KSA)")
+        process_messages_algorithm("Initializes the permutation in array S based on the key.")
+        process_messages_algorithm("Fills S with values 0–255, then shuffles using the key.")
+        process_messages_algorithm("2. Pseudorandom Generation Algorithm (PRGA)")
+        process_messages_algorithm("Uses S to generate a keystream.")
+        process_messages_algorithm("XORs keystream with ciphertext/plaintext to produce output.")
+
         process_messages_write("Performing RC4: ")
+        plaintext = RC4(encrypted_message, key)
+
 
     if identified_algorithm == "sDES":
-        plaintext = sdes_decrypt(encrypted_message, key)
+        process_messages_algorithm("Steps for SDES: ")
+        process_messages_algorithm("Initial Permutation (IP)")
+        process_messages_algorithm("fk using k2")
+        process_messages_algorithm("Swap (Switch halves)")
+        process_messages_algorithm("fk using k1")
+        process_messages_algorithm("Inverse IP (IP⁻¹)")
+
         process_messages_write("Performing sDES: ")
+        plaintext = sdes_decrypt(encrypted_message, key)
+        
 
     if identified_algorithm == "TDES":
-        plaintext = tdes_decrypt(encrypted_message, key)
+        process_messages_algorithm("Steps for TDES: ")
+        process_messages_algorithm("1. Base64 Input")
+        process_messages_algorithm("This is typical for encrypted data that's been Base64-encoded.")
+        process_messages_algorithm("2. Key Handling")
+        process_messages_algorithm("Triple DES expects a 24-byte key (3 DES keys of 8 bytes each")
+        process_messages_algorithm("3. Base64 Decode")
+        process_messages_algorithm("TDES commonly uses CBC mode, which requires:First 8 bytes → IV:Remaining 8 bytes → Actual ciphertext")
+        process_messages_algorithm("4. Decryption")
+        process_messages_algorithm("Decrypted output:  (\x06 repeated), meaning 6 bytes of padding were added., After removing padding we get the original plaintext.")
+
         process_messages_write("Performing TDES: ")
+        plaintext = tdes_decrypt(encrypted_message, key)
+
 
     if identified_algorithm == "RSA":
-        plaintext = rsa_decrypt(encrypted_message, private_key)
+        process_messages_algorithm("Steps for RSA: ")
         process_messages_write("Performing RSA: ")
+        plaintext = rsa_decrypt(encrypted_message, private_key)
+
 
     if identified_algorithm == "AES":
-        plaintext = tdes_decrypt(encrypted_message, key)
+        process_messages_algorithm("Steps for AES: ")
         process_messages_write("Performing AES: ")
+        plaintext = tdes_decrypt(encrypted_message, key)
+
 
     process_messages_write("Decrypted Message: " + plaintext)
 
@@ -424,6 +456,13 @@ def process_messages_write(plaintext):
         received_textarea_2.config(state=tk.DISABLED)
         received_textarea_2.yview(tk.END)
         time.sleep(1)
+
+def process_messages_algorithm(plaintext):
+        received_textarea_3.config(state=tk.NORMAL)
+        received_textarea_3.insert(tk.END, f"{plaintext}\n")
+        received_textarea_3.config(state=tk.DISABLED)
+        received_textarea_3.yview(tk.END)
+        
 
 
 def on_button_click_connect():
