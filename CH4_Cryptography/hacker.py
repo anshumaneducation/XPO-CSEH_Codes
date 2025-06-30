@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 import socket
 import threading
 import hashlib
@@ -8,6 +8,7 @@ import RC4
 import RSA
 import sDES
 import TDES
+import AES
 import subprocess
 import verification
 import random
@@ -65,7 +66,7 @@ def on_button_click_connect():
 def update_combo2(event):
     selected_method = combo1.get()
     if selected_method == "Symmetric Encryption":
-        combo2['values'] = ("SDES", "TDES", "RC4")
+        combo2['values'] = ("SDES", "TDES", "RC4","AES")
     elif selected_method == "Asymmetric Encryption":
         combo2['values'] = ("RSA")
     else:
@@ -76,7 +77,10 @@ def update_combo2(event):
 def Decrypt_and_show(ciphertext):
     hash_and_message = ciphertext.split('|')
     if len(hash_and_message) != 3:
+        print("Problem here")
         return
+        
+    # Extract the received hash, key hash, and encrypted message
 
     received_hash = hash_and_message[0]
     received_key_hash = hash_and_message[1]
@@ -92,6 +96,8 @@ def Decrypt_and_show(ciphertext):
             plaintext = TDES.tdes_decrypt(encrypted_message, key)
         elif algorithm == "SDES":
             plaintext = sDES.sdes_decrypt(encrypted_message, key)
+        elif algorithm == "AES":
+            plaintext = AES.aes_decrypt(encrypted_message, key)
         elif algorithm == "RSA":
             plaintext = RSA.rsa_decrypt(encrypted_message, key_pair_1)
         else:
@@ -99,6 +105,7 @@ def Decrypt_and_show(ciphertext):
         
         received_textarea_decrypted.insert(tk.END, plaintext + "\n")
     except Exception as e:
+        messagebox.showerror("Decryption error:", f"Key Incorrect: {e}")
         print(f"Decryption error: {e}")
 
 
