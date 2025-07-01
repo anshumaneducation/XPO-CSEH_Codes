@@ -11,7 +11,6 @@ import hashlib
 import threading
 import AES
 import subprocess
-import sign
 import random
 import string
 import psutil

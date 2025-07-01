@@ -3,14 +3,13 @@ from tkinter import ttk, filedialog, messagebox
 import socket
 import threading
 import hashlib
-import re  # Added for regex
+import re  
 import RC4
 import RSA
 import sDES
 import TDES
 import AES
 import subprocess
-import verification
 import random
 
 client_socket = None
@@ -105,7 +104,7 @@ def Decrypt_and_show(ciphertext):
         
         received_textarea_decrypted.insert(tk.END, plaintext + "\n")
     except Exception as e:
-        messagebox.showerror("Decryption error:", f"Key Incorrect: {e}")
+        messagebox.WARNING("Decryption error:", f"Decryption Error: {e}")
         print(f"Decryption error: {e}")
 
 

@@ -1,0 +1,5 @@
+pycryptodome
+Crypto
+psutil
+cryptography
+auto-py-to-exe

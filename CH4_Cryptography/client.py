@@ -6,7 +6,6 @@ import socket
 import threading
 import hashlib
 import subprocess
-import verification
 import random
 import re  # Added for regex
 import random
@@ -16,11 +15,7 @@ from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 import os
 import time
-
 from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
-from Crypto.Util.Padding import pad, unpad
-import base64
 
 
 def aes_encrypt(plaintext: str, key ) -> str:

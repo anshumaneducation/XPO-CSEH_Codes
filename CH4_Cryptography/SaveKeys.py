@@ -3,16 +3,16 @@ from tkinter import ttk
 import os
 import hashlib
 import binascii
-import time
+
 
 # Path to store the keys (relative to script location)
 path_to_keys =  "DSAkeys.txt"
 # File path for validation
-file_path = "/home/an/CSEH Applications/Executables/Cryptography Apps/encrypted_file.enc"
+file_path = "/etc/encrypted_file.enc"
 
 # # Check if the encrypted file exists before opening the app
-# if not os.path.exists(file_path):
-#     exit()
+if not os.path.exists(file_path):
+    exit()
 
 def custom_hash(input_string):
     process_messages_write("🔍 Starting Hashing Process...\n")
