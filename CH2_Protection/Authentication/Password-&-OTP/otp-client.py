@@ -3,6 +3,7 @@ from tkinter import messagebox
 import random
 import socket
 import threading
+import os
 
 # File path
 file_path = "/etc/encrypted_file.enc"

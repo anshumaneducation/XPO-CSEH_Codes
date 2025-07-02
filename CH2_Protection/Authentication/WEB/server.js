@@ -1,30 +1,53 @@
-const express = require('express');
+const http = require('http');
+const fs = require('fs');
 const path = require('path');
 
-const app = express();
+// Allowed IPs
+const allowedIPs = ["192.168.2.132", "127.0.0.1", "203.0.113.5"];
+
 const PORT = 3000;
+const PUBLIC_DIR = path.join(__dirname, 'public');
 
-// List of allowed IPs
-const allowedIPs = ["192.168.1.1", "127.0.0.1", "203.0.113.5"];
+const server = http.createServer((req, res) => {
+    const clientIP = req.socket.remoteAddress.replace('::ffff:', '');
+    console.log("Client IP:", clientIP);
 
-// Middleware to serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// API to detect IP and send allowed status
-app.get('/check-ip', (req, res) => {
-    const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-
-    console.log("Client IP:", clientIP); // Log the detected IP for debugging
-
-    // Check if the IP is in the allowed list
-    const isAllowed = allowedIPs.includes(clientIP.replace('::ffff:', ''));
-    res.json({
-        success: isAllowed,
-        message: isAllowed ? "Your IP is allowed. Welcome!" : "Your IP is not allowed. Access denied.",
-    });
+    if (req.url === '/check-ip') {
+        const isAllowed = allowedIPs.includes(clientIP);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+            success: isAllowed,
+            message: isAllowed ? "Your IP is allowed. Welcome!" : "Your IP is not allowed. Access denied.",
+        }));
+    } else {
+        // Serve static files from 'public' folder
+        let filePath = path.join(PUBLIC_DIR, req.url === '/' ? 'index.html' : req.url);
+        
+        // Normalize to prevent directory traversal
+        filePath = path.normalize(filePath);
+        
+        fs.readFile(filePath, (err, content) => {
+            if (err) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.end('404 Not Found');
+            } else {
+                const ext = path.extname(filePath).toLowerCase();
+                const mimeTypes = {
+                    '.html': 'text/html',
+                    '.js': 'application/javascript',
+                    '.css': 'text/css',
+                    '.json': 'application/json',
+                    '.png': 'image/png',
+                    '.jpg': 'image/jpeg',
+                    '.gif': 'image/gif'
+                };
+                res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' });
+                res.end(content);
+            }
+        });
+    }
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server running on http://192.168.201.245:${PORT}`);
+server.listen(PORT,'0.0.0.0', () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
