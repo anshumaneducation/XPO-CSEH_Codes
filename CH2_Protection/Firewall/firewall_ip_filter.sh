@@ -15,15 +15,14 @@
 
 #!/bin/bash
 # Script to block or allow traffic based on IP addresses
+# Usage: ./firewall_ip_filter.sh blocked_ip1 blocked_ip2 ...
 
 echo "Setting up IP address filtering..."
 
-# Block traffic from a specific IP (customize this)
-BLOCKED_IP="192.168.1.100"
-sudo iptables -A INPUT -s $BLOCKED_IP -j DROP
-echo "Blocked IP address: $BLOCKED_IP"
+# Loop through all command-line arguments (IPs)
+for BLOCKED_IP in "$@"; do
+    sudo iptables -A INPUT -s "$BLOCKED_IP" -j DROP
+    echo "Blocked IP address: $BLOCKED_IP"
+done
 
-# Allow traffic from a trusted IP
-TRUSTED_IP="192.168.1.50"
-sudo iptables -A INPUT -s $TRUSTED_IP -j ACCEPT
-echo "Allowed traffic from trusted IP: $TRUSTED_IP"
+

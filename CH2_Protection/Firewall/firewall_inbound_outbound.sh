@@ -18,24 +18,43 @@
 
 #!/bin/bash
 # Script to set up basic inbound and outbound firewall rules
+# takes argument as IN or OUT for inbound or outbound rules block it 
+echo "Setting up basic inbound and outbound firewall rules..."
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 IN|OUT"
+    exit 1
+fi
+RULE_TYPE=$1
+if [[ "$RULE_TYPE" != "IN" && "$RULE_TYPE" != "OUT" ]]; then
+    echo "Invalid argument. Use IN for inbound rules or OUT for outbound rules."
+    exit 1
+fi
+
+#!/bin/bash
+# Script to set up basic inbound and outbound firewall rules
+# Takes argument as IN or OUT for inbound or outbound rules to block
 
 echo "Setting up basic inbound and outbound firewall rules..."
 
-# Allow all outgoing traffic
-sudo iptables -P OUTPUT ACCEPT
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 IN|OUT"
+    exit 1
+fi
 
-# Block all incoming traffic by default
-sudo iptables -P INPUT DROP
+RULE_TYPE=$1
 
-# Allow incoming traffic on specific ports (SSH, HTTP, HTTPS)
-sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+if [[ "$RULE_TYPE" != "IN" && "$RULE_TYPE" != "OUT" ]]; then
+    echo "Invalid argument. Use IN for inbound rules or OUT for outbound rules."
+    exit 1
+fi
 
-# Allow traffic from localhost
-sudo iptables -A INPUT -i lo -j ACCEPT
+if [ "$RULE_TYPE" == "IN" ]; then
+    # Block all inbound traffic
+    sudo iptables -A INPUT -j DROP
+    echo "Blocked all inbound traffic."
+elif [ "$RULE_TYPE" == "OUT" ]; then
+    # Block all outbound traffic
+    sudo iptables -A OUTPUT -j DROP
+    echo "Blocked all outbound traffic."
+fi
 
-# Allow established and related connections
-sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-
-echo "Inbound and outbound rules applied."

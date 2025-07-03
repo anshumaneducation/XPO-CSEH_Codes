@@ -18,10 +18,20 @@ shared_secret_set="mypassword"
 
 # Function to generate a random challenge string
 def generate_challenge():
+    write_to_textbox("Generating challenge...")
+    write_to_textbox("Challenge generated.")
+    # Generate a random string of 8 alphanumeric characters
+    write_to_textbox("Generating random alphanumeric string for challenge.")
+    write_to_textbox("Random alphanumeric string generated.")
+    write_to_textbox(''.join(random.choices(string.ascii_letters + string.digits, k=8)))
     return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+
 
 # Function to hash challenge + password using MD5
 def compute_hash(challenge, password):
+    write_to_textbox("Computing MD5 hash of challenge and password.")
+    write_to_textbox(f"Challenge: {challenge}, Password: {password}")
+    write_to_textbox("MD5 hash computed.")
     return hashlib.md5((password + challenge).encode()).hexdigest()
 
 # Set password from GUI input
@@ -38,6 +48,7 @@ def handle_client(client_socket, client_address):
     # Generate challenge and send it to the client
     challenge = generate_challenge()
     client_socket.send(challenge.encode())
+    write_to_textbox(f"Sent challenge: {challenge}")
     print(f"Sent challenge: {challenge}")
 
     # Update the server GUI with the challenge
@@ -50,20 +61,25 @@ def handle_client(client_socket, client_address):
 
     # Update the server GUI with received username and response
     label_username.config(text=f"Received Username: {received_username}")
+    write_to_textbox(f"Received Username: {received_username}")
     label_response.config(text=f"Received Response: {received_response}")
+    write_to_textbox(f"Received Response: {received_response}")
 
     # Validate the response
     expected_response = compute_hash(challenge, shared_secret.get())
+    write_to_textbox(f"Expected Response: {expected_response}")
 
     # Authenticate and send result back to client
     if received_response == expected_response:
         result = "Authentication successful!"
         print(result)
         client_socket.send(result.encode())
+        write_to_textbox(result)
     else:
         result = "Authentication failed!"
         print(result)
         client_socket.send(result.encode())
+        write_to_textbox(result)
 
     client_socket.close()
 
@@ -78,6 +94,7 @@ print(f"Server listening on {server_host}:{server_port}...")
 
 # Create the GUI window for the server
 server_window = tk.Tk()
+server_window.geometry("600x600")
 server_window.title("CHAP Authenticator Server")
 # Shared secret password (as a StringVar)
 shared_secret = tk.StringVar()
@@ -102,6 +119,18 @@ label_username.pack(pady=5)
 
 label_response = tk.Label(server_window, text="Received Response:")
 label_response.pack(pady=5)
+
+label_text_flow = tk.Label(server_window, text="Flow of Events in server below")
+label_text_flow.pack(pady=5)
+
+# Textbox to show flow of events
+textbox_flow = tk.Text(server_window, height=15, width=50)
+textbox_flow.pack(pady=5)
+# Function to write text to the textbox
+def write_to_textbox(text):
+    textbox_flow.insert(tk.END, text + "\n")
+    textbox_flow.see(tk.END)
+
 
 # Function to accept client connections and spawn threads
 def accept_connections():

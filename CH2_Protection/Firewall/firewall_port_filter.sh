@@ -21,21 +21,18 @@
 
 #!/bin/bash
 # Script to filter traffic based on ports
-
+# take port numbers as arguments
+# Usage: ./firewall_port_filter.sh port1 port2 ...
+# Example: ./firewall_port_filter.sh 25 80 8080 443
 echo "Setting up port-based firewall rules..."
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 port1 port2 ..."
+    exit 1
+fi
+# Loop through all command-line arguments (ports)& block them
+for PORT in "$@"; do
+    sudo iptables -A INPUT -p tcp --dport "$PORT" -j DROP
+    echo "Blocked traffic on port $PORT."
+done
 
-# Block all traffic on port 25 (SMTP)
-sudo iptables -A INPUT -p tcp --dport 25 -j DROP
-echo "Blocked SMTP traffic on port 25."
 
-# Block all traffic on port 80 (HTTP)
-sudo iptables -A INPUT -p tcp --dport 80 -j DROP
-echo "Blocked HTTP traffic on port 80."
-
-# Drop traffic on port 8080
-sudo iptables -A INPUT -p tcp --dport 8080 -j DROP
-echo "Dropped traffic on port 8080."
-
-# Allow traffic on a specific port (example: port 443 for HTTPS)
-sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-echo "Allowed HTTPS traffic on port 443."
