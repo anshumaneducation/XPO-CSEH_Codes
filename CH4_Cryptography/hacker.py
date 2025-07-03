@@ -112,20 +112,36 @@ def Decrypt_and_show(ciphertext):
 def on_button_click_decrypt():
     global algorithm_selected, key_pair_1, public_key1, type_of
 
-    algorithm_selected = combo2.get()
-    hash_algorithm = hashlib.md5(algorithm_selected.encode()).hexdigest()
+    try:
+        algorithm_selected = combo2.get()
+        hash_algorithm = hashlib.md5(algorithm_selected.encode()).hexdigest()
 
-    public_key_get = public_key_entry.get()
-    private_key_get = private_key_entry.get()
+        public_key_get = public_key_entry.get()
+        private_key_get = private_key_entry.get()
 
-    key_hash = hashlib.md5(public_key_get.encode()).hexdigest()
+        # Validate that the keys are not empty
+        if not public_key_get or not private_key_get:
+            raise ValueError("Both public and private keys must be provided.")
 
-    if combo1.get() == "Symmetric Encryption":
-        type_of = "Symmetric Encryption"
-        public_key1 = public_key_get
-    else:
-        type_of = "Asymmetric Encryption"
-        key_pair_1 = (int(private_key_get), int(public_key_get))
+        # Validate that the keys are integers
+        if not public_key_get.isdigit() or not private_key_get.isdigit():
+            raise ValueError("Both public and private keys must be valid integers.")
+
+        key_hash = hashlib.md5(public_key_get.encode()).hexdigest()
+
+        if combo1.get() == "Symmetric Encryption":
+            type_of = "Symmetric Encryption"
+            public_key1 = public_key_get
+        else:
+            type_of = "Asymmetric Encryption"
+            key_pair_1 = (int(private_key_get), int(public_key_get))
+
+    except ValueError as ve:
+        print(f"Input Error: {ve}")
+        messagebox.showerror("Input Error", str(ve))  # Show error message in a Tkinter popup
+    except Exception as e:
+        print(f"Unexpected Error: {e}")
+        messagebox.showerror("Error", f"An unexpected error occurred: {e}")
 
 
 
@@ -141,15 +157,19 @@ root.resizable(False, True)
 frame = ttk.Frame(root, padding="10")
 frame.pack(fill=tk.BOTH, expand=True)
 
+# frame at top for ip address and connect button
+frame_top = ttk.Frame(frame)
+frame_top.pack(fill=tk.X, padx=5, pady=5)
+
 # Connect to Server
-connect_label = ttk.Label(frame, text="Connect to server:")
-connect_label.pack(fill=tk.X, padx=5, pady=5)
+connect_label = ttk.Label(frame_top, text="Connect to server:")
+connect_label.grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
 
-ip_address_server_entry = ttk.Entry(frame)
-ip_address_server_entry.pack(fill=tk.X, padx=10, pady=5)
+ip_address_server_entry = ttk.Entry(frame_top)
+ip_address_server_entry.grid(row=0, column=1, padx=5, pady=5, sticky=tk.W)
 
-connect_button = ttk.Button(frame, text="Connect", command=on_button_click_connect)
-connect_button.pack(padx=10, pady=10)
+connect_button = ttk.Button(frame_top, text="Connect", command=on_button_click_connect)
+connect_button.grid(row=0, column=2, padx=5, pady=5, sticky=tk.W)
 
 # Step 1: Get Encrypted Messages
 step_label1 = ttk.Label(frame, text="Step 1: Get the encrypted messages anyhow:")
