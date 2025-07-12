@@ -8,10 +8,14 @@ fi
 
 target=$1
 
-echo "Performing TCP Ping on $target for ports 80 and 443..."
+echo "Performing TCP Ping on $target for ports 80, 8080 and 443..."
 
 # Check port 80
 nc -zv -w1 $target 80 2>&1 | grep "succeeded" || echo "Port 80 is closed or host is unreachable."
+
+
+# Check port 80
+nc -zv -w1 $target 8080 2>&1 | grep "succeeded" || echo "Port 8080 is closed or host is unreachable."
 
 # Check port 443
 nc -zv -w1 $target 443 2>&1 | grep "succeeded" || echo "Port 443 is closed or host is unreachable."

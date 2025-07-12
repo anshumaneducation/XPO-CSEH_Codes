@@ -5,8 +5,8 @@ def start_udp_client():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # Step 2: Set the server address
-    host = 'localhost'
-    port = 12345
+    host = '127.0.0.1'
+    port = 8080
     server_address = (host, port)
 
     try:

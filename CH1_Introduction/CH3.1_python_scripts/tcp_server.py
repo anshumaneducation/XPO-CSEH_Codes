@@ -6,8 +6,8 @@ def start_server():
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     # Step 2: Bind the socket to an address and port
-    host = 'localhost'
-    port = 12345
+    host = '0.0.0.0'
+    port = 8080
     server_socket.bind((host, port))
 
     # Step 3: Listen for incoming connections

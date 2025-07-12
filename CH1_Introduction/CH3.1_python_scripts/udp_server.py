@@ -5,8 +5,8 @@ def start_udp_server():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # Step 2: Bind the socket to an address and port
-    host = 'localhost'
-    port = 12345
+    host = '0.0.0.0'
+    port = 8080
     server_socket.bind((host, port))
     print(f"UDP server is listening on {host}:{port}...")
 

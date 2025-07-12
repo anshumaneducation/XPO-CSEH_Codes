@@ -108,7 +108,7 @@ def show_frame_as_per_combobox():
         current_selection_window=2
     elif selected_option == "3. Protocol Based Rules":
         frame_protocol.pack(fill=tk.BOTH, expand=True)
-        current_selection_window
+        current_selection_window=3
     elif selected_option == "4. Port Based Rules":
         frame_port.pack(fill=tk.BOTH, expand=True)
         current_selection_window=4
@@ -270,7 +270,7 @@ def checkProtocolInput():
     global allowed_protocol
     selected_protocol = combo_protocol.get()
     if selected_protocol not in protocols:
-        messagebox.showerror("Invalid Protocol", "Please select a valid protocol (TCP, UDP, ICMP).")
+        messagebox.showerror("Invalid Protocol", "Please select a valid protocol (TCP, UDP, ICMP, HTTP).")
         return
     messagebox.showinfo("Protocol Filter", f"Setting rules for {selected_protocol} protocol only allowed.")
     allowed_protocol = selected_protocol

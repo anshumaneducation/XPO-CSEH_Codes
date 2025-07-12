@@ -79,15 +79,20 @@ def decrypt_file():
             process_messages_write("  Decrypted File Extension: " + os.path.splitext(encrypted_file_path)[1] + "\n")
             process_messages_write("  Decrypted File Size: " + str(len(decrypted_data)) + " bytes\n")
             print(encrypted_file_path)
-            decrypted_file_path = file_path.rstrip(".enc")
+            if file_path.endswith(".enc"):
+                decrypted_file_path = file_path[:-4]  # remove last 4 characters
+            else:
+                messagebox.showerror("Error", "File does not have .enc extension, cannot decrypt.")
+                return
+
             with open(decrypted_file_path, "wb") as decrypted_file:
                 decrypted_file.write(decrypted_data)
             process_messages_write("  Decrypted File Saved Successfully.\n")
             process_messages_write(f"  Decrypted File Path: {decrypted_file_path}\n")
             process_messages_write("🔓 Decryption Process Completed Successfully.\n")
-            messagebox.showinfo("Success", f"File decrypted successfully!\nSaved as: {decrypted_file_path}")
             os.remove(encrypted_file_path)
-
+            messagebox.showinfo("Success", f"File decrypted successfully!\nSaved as: {decrypted_file_path}")
+        
         except Exception as e:
             messagebox.showerror("Error", f"Decryption failed: {str(e)}")
             print(traceback.format_exc())

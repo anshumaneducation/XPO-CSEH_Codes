@@ -50,11 +50,11 @@ def set_attack_speed(event):
     """Set attack speed based on selected option."""
     global attack_speed
     speed_map = {
-        "Full Speed": 1000,
+        "Full Speed": 10,
         "Slow": 0.1,
         "Medium": 0.5,
         "Fast": 1,
-        "Ultra Speed": 10
+        "Ultra Speed": 100
     }
     attack_speed = speed_map.get(speed_combobox.get(), 1)
 

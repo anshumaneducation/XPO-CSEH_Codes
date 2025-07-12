@@ -10,7 +10,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.wfile.write(b"Hello World!")  # Write response
 
 # Set up and start the server
-server_address = ('', 8080)
+server_address = ('0.0.0.0', 8080)
 httpd = HTTPServer(server_address, MyHandler)
 print("Server running on port 8080...")
 httpd.serve_forever()

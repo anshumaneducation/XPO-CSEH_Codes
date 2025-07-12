@@ -25,6 +25,14 @@ def on_combobox_select(event):
     elif selected_option == "Digital Signature":
         import password_verifier
 
+    elif selected_option == "Diffie-Hellman Server":
+        import dh_server
+
+    elif selected_option == "Diffie-Hellman Client":
+        import dh_client
+
+
+
 # Create the main window
 root = tk.Tk()
 
@@ -42,7 +50,7 @@ frame.pack(fill=tk.BOTH, expand=True)
 combo_label = ttk.Label(frame, text="Select a tool to launch:")
 combo_label.pack(fill=tk.X, padx=5, pady=5)
 
-combo = ttk.Combobox(frame, values=["Receiver", "Sender", "Hacker", "Digital Signature"])
+combo = ttk.Combobox(frame, values=["Receiver", "Sender", "Hacker", "Digital Signature","Diffie-Hellman Server", "Diffie-Hellman Client"])
 combo.pack(fill=tk.X, padx=5, pady=5)
 combo.bind("<<ComboboxSelected>>", on_combobox_select)
 

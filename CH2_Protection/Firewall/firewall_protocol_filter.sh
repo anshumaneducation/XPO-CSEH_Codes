@@ -24,10 +24,13 @@ PROTOCOL_NAME=$1
 echo "Setting up protocol-based firewall rules..."
 echo "Allowing only $PROTOCOL_NAME traffic and blocking all others..."
 
+# Flush existing rules to start fresh
+sudo iptables -F
+
 # Allow traffic for the specified protocol
 sudo iptables -A INPUT -p "$PROTOCOL_NAME" -j ACCEPT
 echo "Allowed $PROTOCOL_NAME traffic."
 
 # Block all other protocols
-sudo iptables -A INPUT -p ! "$PROTOCOL_NAME" -j DROP
-echo "Blocked all other protocols except $PROTOCOL_NAME."
+sudo iptables -A INPUT -j DROP
+echo "Blocked all other protocols."
