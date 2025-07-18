@@ -80,8 +80,8 @@ def resetAllFirewallRules():
 root = tk.Tk()
 
 root.title("Cyber Security Tool Selector")
-screen_width = 400
-screen_height = 400
+screen_width = 600
+screen_height = 600
 root.geometry(f"{screen_width}x{screen_height}")
 
 # Create a frame for layout purposes
